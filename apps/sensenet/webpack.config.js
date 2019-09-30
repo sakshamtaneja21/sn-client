@@ -3,7 +3,7 @@ const webpack = require('webpack')
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
-const TsConfigWebpackPlugin = require('ts-config-webpack-plugin')
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const GitRevisionPlugin = require('git-revision-webpack-plugin')
 
 const gitRevisionPlugin = new GitRevisionPlugin()
@@ -42,7 +42,7 @@ module.exports = {
   },
   plugins: [
     // new BundleAnalyzerPlugin({ analyzerPort: 8745 }),
-    new TsConfigWebpackPlugin(),
+    new ForkTsCheckerWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './index.html',
       favicon: './src/assets/favicon.ico',
@@ -62,11 +62,15 @@ module.exports = {
   ],
   module: {
     rules: [
-      // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-      // { test: /\.tsx?$/, loader: 'awesome-typescript-loader' },
-
-      // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-      // { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader', exclude: /monaco-editor/ },
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        options: {
+          transpileOnly: true,
+          projectReferences: true,
+          experimentalWatchApi: true,
+        },
+      },
       {
         test: /\.css$/,
         use: [

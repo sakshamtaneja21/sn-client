@@ -3,7 +3,6 @@
   "compilerOptions": {
     "module": "esnext",
     "outDir": "dist",
-    "composite": false,
     "jsx": "react",
     "rootDir": "./src",
     "forceConsistentCasingInFileNames": true,
